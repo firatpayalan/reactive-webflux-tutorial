@@ -23,7 +23,6 @@ public class HelloHandler {
     }
 
     public Mono<ServerResponse> handleWithText(ServerRequest request){
-        HelloResponse response = new HelloResponse();
         // ServerResponse allows chaining method call.
         // "syncBody" method takes a POJO object. Converts into "Publisher" object
         //  and encodes that specified into the content-type

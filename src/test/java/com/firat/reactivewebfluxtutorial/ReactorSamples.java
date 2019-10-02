@@ -2,6 +2,8 @@ package com.firat.reactivewebfluxtutorial;
 
 import org.junit.Test;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+import reactor.test.StepVerifier;
 
 public class ReactorSamples {
     @Test
@@ -25,4 +27,34 @@ public class ReactorSamples {
         flux.map(s -> "foo" + s).subscribe(System.out::println);
         // prints fooA
     }
+
+    @Test
+    public void monoStepVerifer(){
+        // StepVerifier can be an assertions of reactive streams.
+
+        // stringMono takes the "Hello World" string as argument
+        // then transforms into the "hello world" string through the command of String::toLowerCase
+        Mono<String> stringMono = Mono.just("Hello World").map(String::toLowerCase);
+
+        // initial step is the expected output of the .map() method.
+        StepVerifier.create(stringMono)
+                .expectNext("hello world")
+                .expectComplete()
+                .verify();
+
+
+    }
+
+
+    @Test
+    public void fluxStepVerifier(){
+        Flux<String> stringFlux = Flux.just("Hello","World").map(String::toLowerCase);
+
+        StepVerifier.create(stringFlux)
+                .expectNext("hello")
+                .expectNext("world")
+                .expectComplete()
+                .verify();
+    }
+
 }
