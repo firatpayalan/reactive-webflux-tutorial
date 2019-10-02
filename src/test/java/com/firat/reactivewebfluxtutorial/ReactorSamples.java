@@ -3,6 +3,7 @@ package com.firat.reactivewebfluxtutorial;
 import org.junit.Test;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 
 public class ReactorSamples {
@@ -56,5 +57,32 @@ public class ReactorSamples {
                 .expectComplete()
                 .verify();
     }
+
+
+    /**
+     * main thread produces the items that given in the parameters
+     * Schedulers.parallels() releases thread per CPU that executes operation within flatMap() method.
+     *
+     * Results;
+     * flatMap()-before execution ! + WORLD - 1570027406905 - main
+     * flatMap()-before execution ! + IS - 1570027406972 - main
+     * flatMap() after execution ! + world - 1570027406972 - parallel-1
+     * flatMap() after execution ! + is - 1570027406973 - parallel-2
+     * flatMap()-before execution ! + NOT - 1570027406973 - main
+     * flatMap()-before execution ! + ENOUGH - 1570027406973 - main
+     * flatMap() after execution ! + not - 1570027406973 - parallel-3
+     * flatMap() after execution ! + enough - 1570027406973 - parallel-4
+     */
+    @Test
+    public void multithreadingWithFlatMap(){
+                Flux.just("WORLD","IS","NOT","ENOUGH")
+                .doOnNext(i->System.out.println("flatMap()-before execution ! + "+ i +" - " +System.currentTimeMillis()+" - "+Thread.currentThread().getName()))
+                .flatMap(j->
+                     Mono.just(j.toLowerCase()).subscribeOn(Schedulers.parallel())
+                )
+                .doOnNext(j->System.out.println("flatMap() after execution ! + "+ j +" - " +System.currentTimeMillis()+" - "+Thread.currentThread().getName()))
+                .subscribe();
+    }
+
 
 }
