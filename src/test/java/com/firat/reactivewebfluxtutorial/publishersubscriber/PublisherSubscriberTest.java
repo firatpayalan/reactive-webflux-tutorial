@@ -11,5 +11,9 @@ public class PublisherSubscriberTest {
         TransactionSubscriber subscriber = new TransactionSubscriber();
 
         publisher.subscribe(subscriber);
+        /**
+         * 17:45:32.066 [main] INFO com.firat.reactivewebfluxtutorial.publishersubscriber.TransactionSubscriber - Publisher published the item: Transaction{id=1, amount=1.25, label='AMAZON Payment', status='CREATED'}, main
+         * 17:45:32.073 [main] INFO com.firat.reactivewebfluxtutorial.publishersubscriber.TransactionSubscriber - Transaction Processed
+         */
     }
 }
