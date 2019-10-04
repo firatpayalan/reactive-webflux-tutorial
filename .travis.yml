@@ -1,7 +1,7 @@
 language: java
+dist: trusty
 jdk:
   - oraclejdk8
-  - oraclejdk9
 # default install command is just "mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V"
 install:
   - mvn install -DskipTests=true -Dmaven.javadoc.skip=true -B -V -e
